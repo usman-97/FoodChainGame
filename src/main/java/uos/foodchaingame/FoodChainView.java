@@ -1,12 +1,12 @@
-/**
- * 
- */
+
 package uos.foodchaingame;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -23,6 +23,9 @@ public class FoodChainView {
 	
 	Canvas jungle, selection;
 	Circle selectedProducer, selectedPrey, selectedPredator;
+	
+	Button chooseProducer, choosePrey, choosePredator;
+	Label producerLbl, preyLbl, predatorLbl; 
 	
 	public FoodChainView(Pane root, FoodChainModel model) {
 		super();
@@ -48,9 +51,33 @@ public class FoodChainView {
 		selectedProducer.setFill(Color.SADDLEBROWN);
 		
 		selectedPrey = new Circle(400, 700, 80);
+		selectedPrey.setFill(Color.SADDLEBROWN);
 		
+		selectedPredator = new Circle(600, 700, 80);
+		selectedPredator.setFill(Color.SADDLEBROWN);
 		
-		root.getChildren().addAll(selectedProducer);
+		HBox selectionSlots = new HBox(50, selectedProducer, selectedPrey, selectedPredator);
+		selectionSlots.setLayoutX(100);
+		selectionSlots.setLayoutY(630);
+		
+		chooseProducer = new Button("Choose");
+		choosePrey = new Button("Choose");
+		choosePredator = new Button("Choose");
+		
+		HBox chooseBtn = new HBox(155, chooseProducer, choosePrey, choosePredator);
+		chooseBtn.setLayoutX(150);
+		chooseBtn.setLayoutY(750);
+		
+		producerLbl = new Label("Producer");
+		preyLbl = new Label("Prey");
+		predatorLbl = new Label("Predator");
+		
+		HBox labels = new HBox(155, producerLbl, preyLbl, predatorLbl);
+		labels.setStyle("-fx-font-size: 20px;");
+		labels.setLayoutX(150);
+		labels.setLayoutY(605);
+		
+		root.getChildren().addAll(selectionSlots, chooseBtn, labels);
 	}
 	
 	public void updateView()

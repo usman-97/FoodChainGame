@@ -19,13 +19,20 @@ public class FoodChainController implements EventHandler{
 		super();
 		this.model = model;
 		this.view = view;
+		
+		view.chooseProducer.setOnAction(this);
+		view.choosePrey.setOnAction(this);
+		view.choosePredator.setOnAction(this);
+		
 		updateView();
 	}
 
 	@Override
 	public void handle(Event event) {
-		// TODO Auto-generated method stub
-		
+		if (event.getSource() == view.chooseProducer)
+		{
+			
+		}
 	}
 	
 	public void addChainMember(GameObject member)

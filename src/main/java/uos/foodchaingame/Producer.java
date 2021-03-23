@@ -32,6 +32,11 @@ public class Producer extends GameObject{
 		update(width, height);
 	}
 	
+	public Image getImage()
+	{
+		return img;
+	}
+	
 //	public void createProducer(int index)
 //	{
 //		img = new Image(Producer.class.getResource(producers.get(index)).toExternalForm());
