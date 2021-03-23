@@ -3,8 +3,6 @@
  */
 package uos.foodchaingame;
 
-import javafx.scene.image.Image;
-
 /**
  * Factory interface to which will be implemented
  * by Factory class to create objects
