@@ -13,7 +13,8 @@ import javafx.scene.image.Image;
 public class GameObject {
 
 	protected Image img; // Image of the object
-	protected int x, y; // Coordinates for object
+	protected double x; // Coordinates for object
+	double y;
 	protected GraphicsContext gc; // graphics context to draw the object
 	
 	/**
@@ -22,7 +23,7 @@ public class GameObject {
 	 * @param y - y coordinate for the object
 	 * @param gc - graphics context to draw object
 	 */
-	public GameObject(int x, int y, GraphicsContext gc) {
+	public GameObject(double x, double y, GraphicsContext gc) {
 		this.x = x;
 		this.y = y;
 		this.gc = gc;
@@ -31,11 +32,11 @@ public class GameObject {
 	/**
 	 * Update the object
 	 */
-	public void update()
+	public void update(double dx, double dy)
 	{
 		if (img != null)
 		{
-			gc.drawImage(img, x, y, 30, 30);
+			gc.drawImage(img, x, y, dx, dy);
 		}
 	}
 }

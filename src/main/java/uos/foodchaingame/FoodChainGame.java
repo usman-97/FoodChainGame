@@ -3,12 +3,16 @@
  */
 package uos.foodchaingame;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -18,9 +22,13 @@ import javafx.stage.Stage;
  */
 public class FoodChainGame extends Application{
 	
-	FlowPane root;
+	// FlowPane root;
+	Pane root;
 	Scene gameScene;
-	Pane jungle, selection;
+	// Pane jungle, selection;
+	Canvas jungle, selection;
+	GraphicsContext gc, gc1;
+	ArrayList<GameObject> producers = new ArrayList<GameObject>();
 
 	/**
 	 * @param args
@@ -34,26 +42,34 @@ public class FoodChainGame extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("FOOD CHAIN - GAME"); // Title of the game on Window
 		
-		root = new FlowPane(); // New Flow pane
+		root = new Pane(); // Root pane
 		gameScene = new Scene(root, 1000, 800);
-		gameScene.getStylesheets().add(getClass().getResource("gameScene.css").toString());
+		// gameScene.getStylesheets().add(getClass().getResource("gameScene.css").toString());
+		
+		jungle = new Canvas(1000, 600);
+		gc = jungle.getGraphicsContext2D();
+		jungle.setId("jungle");
+		gc.drawImage(new Image(getClass().getResourceAsStream("jungleBackground.jpg")), 0, 0, jungle.getWidth(), jungle.getHeight());
+		
+		selection = new Canvas(1000, 200);
+		selection.setLayoutY(600);
+		gc1 = selection.getGraphicsContext2D();
+		gc1.setFill(Color.SANDYBROWN);
+		gc1.fillRect(0, 0, selection.getWidth(), selection.getHeight());
+		
 		primaryStage.setScene(gameScene);
 		primaryStage.show();
 		
-		jungle = new Pane();
-		jungle.setPrefSize(1000, 600);
-		jungle.setId("jungle");
-		
-		selection = new Pane();
-		selection.setPrefSize(1000, 200);
-		selection.setId("selection");
-		
-		// ImageView jungleBackground = new ImageView(); // Image view to set background image
-		// Background image for jungle pane
-		// jungleBackground.setImage(new Image(getClass().getResourceAsStream("jungleBackground.jpg")));
-		
 		root.getChildren().addAll(jungle, selection);
 		
+		// Producer tree = new Producer(100, 300, gc);
+		Factory factory = new Factory(gc);
+		int position = 100;
+		for (int i = 0; i < 2; i++)
+		{
+			producers.add(factory.create("producer", position, 250, 300, 300));
+			position += 400;
+		}
 	}
 
 }
