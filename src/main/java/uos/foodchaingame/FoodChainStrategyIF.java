@@ -9,5 +9,5 @@ package uos.foodchaingame;
  */
 public interface FoodChainStrategyIF {
 
-	public void execute(FoodChainView chain);
+	public void execute(FoodChainView chain, GameObject member);
 }
