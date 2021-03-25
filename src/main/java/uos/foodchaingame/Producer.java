@@ -15,36 +15,33 @@ import javafx.scene.image.Image;
  */
 public class Producer extends GameObject{
 
-	static ArrayList<String> producers;
+	public static ArrayList<String> producers;
 	
-	public Producer(double x, double y, GraphicsContext gc, double width, double height) {
+	public Producer(double x, double y, GraphicsContext gc, double width, double height, String imgPath) {
 		super(x, y, gc);
-		producers = new ArrayList<String>();
-		producers.add("treeProducer.png");
-		producers.add("treeProducer1.png");
+//		producers = new ArrayList<String>();
+//		producers.add("treeProducer.png");
+//		producers.add("treeProducer1.png");
 		
-		Random selectProducer = new Random();
-		int index = selectProducer.nextInt(producers.size());
+//		Random selectProducer = new Random();
+//		int index = selectProducer.nextInt(producers.size());
 		// System.out.println(chosenProducer);
-		img = new Image(Producer.class.getResource(producers.get(index)).toExternalForm());
-		producers.remove(index);
+		img = new Image(Producer.class.getResource(imgPath).toExternalForm());
+//		producers.remove(index);
 		
 		update(width, height);
 	}
 	
-	public Image getImage()
+	public static void addProducers()
 	{
-		return img;
+		producers = new ArrayList<String>();
+		
+		producers.add("treeProducer.png");
+		producers.add("treeProducer1.png");
 	}
 	
-//	public void createProducer(int index)
-//	{
-//		img = new Image(Producer.class.getResource(producers.get(index)).toExternalForm());
-//		update(100, 200);
-//	}
-	
-//	public int getProducersSize()
-//	{
-//		return producers.size();
-//	}
+	public static void removeProducer(int index)
+	{
+		producers.remove(index);
+	}
 }

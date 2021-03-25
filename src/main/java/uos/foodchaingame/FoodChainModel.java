@@ -8,16 +8,18 @@ import java.util.HashMap;
 import javafx.scene.control.Button;
 
 /**
- * @author RAJA
+ * @author Usman Shabir Kousar
  *
  */
 public class FoodChainModel {
 
-	HashMap<GameObject, Button> chain = new HashMap<GameObject, Button>();
+	HashMap<Button, GameObject> producers = new HashMap<Button, GameObject>();
+	HashMap<Button, GameObject> prey = new HashMap<Button, GameObject>();
+//	HashMap<Producer, Button> producers = new HashMap<Producer, Button>();
 	
-	public void addChainMember(GameObject member)
+	public void addProducer(GameObject member)
 	{
 		Button selectBtn = new Button("Select");
-		chain.put(member, selectBtn);
+		producers.put(selectBtn, member);
 	}
 }

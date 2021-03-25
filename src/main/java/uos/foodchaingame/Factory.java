@@ -7,7 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * @author RAJA
+ * @author Usman Shabir Kousar
  *
  */
 public class Factory implements FactoryIF{
@@ -21,10 +21,10 @@ public class Factory implements FactoryIF{
 	 * @param x
 	 * @param y
 	 */
-	public GameObject create(String discrim, double x, double y, double width, double height) {
+	public GameObject create(String discrim, double x, double y, double width, double height, String imgPath) {
 		if (discrim.equalsIgnoreCase("producer"))
 		{
-			new Producer(x, y, gc, width, height);
+			return new Producer(x, y, gc, width, height, imgPath);
 		}
 		else if (discrim.equalsIgnoreCase("prey"))
 			return null; // instantiate Prey
