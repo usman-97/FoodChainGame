@@ -2,6 +2,7 @@
 package uos.foodchaingame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -35,11 +36,10 @@ public class FoodChainView {
 	Button chooseProducer, choosePrey, choosePredator;
 	private Label producerLbl, preyLbl, predatorLbl; 
 	
-	// ArrayList<String> producers;
-	
 	protected GameObject chosenProducer, chosenPrey, chosenPredator;
 	
 	boolean selectProducer, selectPrey, selectPredator;
+	private PanelStrategyIF strategy;
 
 	public FoodChainView(Pane root, FoodChainModel model) {
 		super();
@@ -106,34 +106,13 @@ public class FoodChainView {
 		selectedImages.setLayoutY(650);
 		
 		root.getChildren().addAll(selectionSlots, chooseBtn, labels, selectedImages);
-		
-//		producers = new ArrayList<String>();
-//		producers.add("treeProducer.png");
-//		producers.add("treeProducer1.png");
 	}
 	
 	public void updateView()
 	{
-		// Producer producer = new Producer(300, 300, gc, 300, 300);
-//		Random selectProducer = new Random();
-//		int index = selectProducer.nextInt(producers.size() - 1);
-//		
-//		Factory factory = new Factory(gc);
-//		int position = 100;;
-//		for (int i = 0; i < 2; i++)
-//		{
-//			GameObject producer = factory.create("producer", position, 250, 300, 300, producers.get(index));
-//			producers.remove(index);
-//			model.addChainMember(producer);
-//			
-//			selectBtn = model.chain.get(producer);
-//			selectBtn.setLayoutX(position + 100);
-//			selectBtn.setLayoutY(350);
-//			root.getChildren().add(selectBtn);
-//			
-//			position += 400;
-//		}
-		selectProducers();
+		addMembers("producer", 100, 250, 300, 300, 400);
+		addMembers("prey", 10, 350, 150, 150, 250);
+		addMembers("predator", 500, 350, 150, 150, 100);
 	}
 	
 	private int generateRandomNum(int range)
@@ -164,58 +143,74 @@ public class FoodChainView {
 		}
 	}
 	
-	private void selectProducers()
+	private void addMembers(String chainMember, double x, double y, double width, double height, double distance)
 	{
-//		Random selectProducer = new Random();
-//		int index = selectProducer.nextInt(producers.size() - 1);
-		Producer.addProducers();
-		int index = generateRandomNum(Producer.producers.size() - 1);
-		
 		Factory factory = new Factory(gc);
-		int position = 100;;
-		for (int i = 0; i < 2; i++)
+		int range = 0;
+		ArrayList<String> foodChainMembers = new ArrayList<String>();
+		HashMap<Button, GameObject> selectedMembers = new HashMap<Button, GameObject>();
+		
+		if (chainMember.equalsIgnoreCase("producer"))
 		{
-			GameObject member = (Producer) factory.create("producer", position, 250, 300, 300, Producer.producers.get(index));
-			Producer.producers.remove(index);
-			model.addProducer(member);
+			Producer.addProducers();
+			foodChainMembers = Producer.producers;
+			selectedMembers = model.producers;
+			range = 2;
+		}
+		else if (chainMember.equalsIgnoreCase("prey"))
+		{
+			Prey.addPrey();
+			foodChainMembers = Prey.prey;
+			selectedMembers = model.prey;
+			range = 3;
+		}
+		else
+		{
+			if (chainMember.equalsIgnoreCase("predator"))
+			{
+				Predator.addPredators();
+				foodChainMembers = Predator.predators;
+				selectedMembers = model.predator;
+				range = 2;
+			}
+		}
+
+		for (int i = 1; i < range; i++)
+		{
+			int index = generateRandomNum(foodChainMembers.size() - 1);
 			
-			Button selectBtn = model.producers.entrySet().stream()
+			GameObject member = factory.create(chainMember, x, y, width, height, foodChainMembers.get(index));
+			foodChainMembers.remove(index);
+			model.addProducer(member, chainMember);
+			
+			Button selectBtn = selectedMembers.entrySet().stream()
 					.filter(entry -> member.equals(entry.getValue()))
 					.map(Map.Entry::getKey)
 					.findFirst().get();
-			selectBtn.setLayoutX(position + 100);
-			selectBtn.setLayoutY(350);
+			selectBtn.setLayoutX(x + 100);
+			selectBtn.setLayoutY(y + 100);
 			root.getChildren().add(selectBtn);
 			
 			EventHandler<ActionEvent> selectBtnAction = new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
-					
-//					if (selectProducer)
-//					{
-//						chosenProducer = member;
-//						selectedProducerImg.setImage(member.img);
-//					}
-//					
-//					if (selectPrey)
-//					{
-//						chosenPrey = member;
-//						selectedPreyImg.setImage(member.img);
-//					}
-//					
-//					if (selectPredator)
-//					{
-//						chosenPrey = member;
-//						selectedPredatorImg.setImage(member.img);
-//					}
-					
 					selectMember(member);
 				}
 			};
 			selectBtn.setOnAction(selectBtnAction);
 			
-			position += 400;
+			x += distance;
 		}
+	}
+	
+	public void setPanelStrategy(PanelStrategyIF strategy)
+	{
+		this.strategy = strategy;
+	}
+	
+	public void executePanelStrategy(Circle panel)
+	{
+		this.strategy.execute(panel);
 	}
 }

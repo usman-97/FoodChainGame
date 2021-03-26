@@ -15,11 +15,16 @@ public class FoodChainModel {
 
 	HashMap<Button, GameObject> producers = new HashMap<Button, GameObject>();
 	HashMap<Button, GameObject> prey = new HashMap<Button, GameObject>();
-//	HashMap<Producer, Button> producers = new HashMap<Producer, Button>();
+	HashMap<Button, GameObject> predator = new HashMap<Button, GameObject>();
 	
-	public void addProducer(GameObject member)
+	public void addProducer(GameObject member, String memberType)
 	{
 		Button selectBtn = new Button("Select");
-		producers.put(selectBtn, member);
+		if (memberType.equalsIgnoreCase("producer"))
+			producers.put(selectBtn, member);
+		if (memberType.equalsIgnoreCase("prey"))
+			prey.put(selectBtn, member);
+		if (memberType.equalsIgnoreCase("predator"))
+			predator.put(selectBtn, member);
 	}
 }

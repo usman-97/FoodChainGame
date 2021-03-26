@@ -24,9 +24,12 @@ public class Prey extends GameObject{
 	
 	public static void addPrey()
 	{
+		prey = new ArrayList<String>();
+		
 		prey.add("deer.png");
 		prey.add("giraffe.png");
 		prey.add("yak.png");
+		prey.add("zebra.png");
 	}
 	
 	public static void removePrey(int index)
