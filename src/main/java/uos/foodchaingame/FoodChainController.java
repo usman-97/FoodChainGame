@@ -3,22 +3,29 @@
  */
 package uos.foodchaingame;
 
+import java.util.HashMap;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
+ * FoodChainController class controls the view from model and view
  * @author Usman Shabir Kousar
  *
  */
 public class FoodChainController implements EventHandler{
 
-	FoodChainModel model;
-	FoodChainView view;
+	protected FoodChainModel model; // food chain model
+	protected FoodChainView view; // food chain view
 	
-	DefaultPanelStrategy defaultStrategy;
-	SelectPanelStrategy selectPanelStrategy;
+	// Strategies for panels in view
+	protected DefaultPanelStrategy defaultStrategy;
+	protected SelectPanelStrategy selectPanelStrategy;
+	protected CorrectMemberStrategy correctMemberStrategy;
+	protected WrongMemberStrategy wrongMemberStrategy;
 	
 	public FoodChainController(FoodChainModel model, FoodChainView view) {
 		super();
@@ -28,11 +35,14 @@ public class FoodChainController implements EventHandler{
 		view.chooseProducer.setOnAction(this);
 		view.choosePrey.setOnAction(this);
 		view.choosePredator.setOnAction(this);
+		view.check.setOnAction(this);
 		
 		defaultStrategy = new DefaultPanelStrategy();
 		selectPanelStrategy = new SelectPanelStrategy();
+		correctMemberStrategy = new CorrectMemberStrategy();
+		wrongMemberStrategy = new WrongMemberStrategy();
 		
-		updateView();
+		updateView(); // Update the view for user
 	}
 
 	@Override
@@ -77,6 +87,55 @@ public class FoodChainController implements EventHandler{
 				view.setPanelStrategy(defaultStrategy);
 				view.executePanelStrategy(view.selectedProducer);
 				view.executePanelStrategy(view.selectedPrey);
+				
+			}
+		}
+		
+		if (event.getSource() == view.check)
+		{
+			boolean checkProducer = model.checkPanels(view.chosenProducer, model.producers);
+			boolean checkPrey = model.checkPanels(view.chosenPrey, model.prey);
+			boolean checkPredator = model.checkPanels(view.chosenPredator, model.predator);
+			
+//			System.out.println(checkProducer + " " + view.chosenProducer);
+//			System.out.println(checkPrey + " " + view.chosenPrey);
+//			System.out.println(checkPredator + " " + view.choosePredator);
+			
+			if (checkProducer)
+				view.setPanelStrategy(correctMemberStrategy);
+			else
+				view.setPanelStrategy(wrongMemberStrategy);
+			view.executePanelStrategy(view.selectedProducer);
+			
+			if (checkPrey)
+				view.setPanelStrategy(correctMemberStrategy);
+			else
+				view.setPanelStrategy(wrongMemberStrategy);
+			view.executePanelStrategy(view.selectedPrey);
+			
+			if (checkPredator)
+				view.setPanelStrategy(correctMemberStrategy);
+			else
+				view.setPanelStrategy(wrongMemberStrategy);
+			view.executePanelStrategy(view.selectedPredator);
+			
+			if (checkProducer && checkPrey && checkPredator)
+			{
+				view.setWin(true);
+			}
+			else
+			{
+				if (view.getChances() < 1)
+				{
+					view.setLose(true);
+					view.getStage().setScene(view.getScene());
+					// resetView();
+				}
+				else
+				{
+					view.setChances(view.getChances() - 1);
+					view.chancesLbl.setText("Chances: " + view.getChances());
+				}
 			}
 		}
 	}
@@ -91,17 +150,14 @@ public class FoodChainController implements EventHandler{
 		view.updateView();
 	}
 	
-//	private void selectViewPanelStrategy(boolean condition1, boolean condition2, boolean condition3)
-//	{
-//		view.setPanelStrategy(selectPanelStrategy);
-//		if (condition1)
-//			
-//		view.executePanelStrategy(view.selectedProducer);
-//		
-//		view.setPanelStrategy(defaultStrategy);
-//		view.executePanelStrategy(view.selectedPrey);
-//		view.executePanelStrategy(view.selectedPredator);
-//	}
+	public void resetView()
+	{
+		view.resetView();
+		view.setPanelStrategy(defaultStrategy);
+		view.executePanelStrategy(view.selectedProducer);
+		view.executePanelStrategy(view.selectedPrey);
+		view.executePanelStrategy(view.selectedPredator);
+	}
 }
 
 /**
@@ -130,4 +186,32 @@ class SelectPanelStrategy implements PanelStrategyIF {
 		panel.setFill(Color.LIGHTSKYBLUE);
 	}
 	
+}
+
+/**
+ * 
+ * @author Usman Shabir Kousar
+ *
+ */
+class CorrectMemberStrategy implements PanelStrategyIF {
+
+	@Override
+	public void execute(Circle panel) {
+		panel.setFill(Color.FORESTGREEN);
+		
+	}
+}
+
+/**
+ * 
+ * @author Usman Shabir Kousar
+ *
+ */
+class WrongMemberStrategy implements PanelStrategyIF {
+
+	@Override
+	public void execute(Circle panel) {
+		panel.setFill(Color.RED);
+		
+	}
 }

@@ -14,14 +14,27 @@ import javafx.scene.image.Image;
  */
 public class Prey extends GameObject{
 
-	public static ArrayList<String> prey;
+	public static ArrayList<String> prey; // Stores images for prey objects
 	
+	/**
+	 * Constructor of Prey class model which sets the Prey objects position, height
+	 * and width
+	 * @param x
+	 * @param y
+	 * @param gc
+	 * @param width
+	 * @param height
+	 * @param imgPath
+	 */
 	public Prey(double x, double y, GraphicsContext gc, double width, double height, String imgPath) {
 		super(x, y, gc);
 		img = new Image(Prey.class.getResource(imgPath).toExternalForm());
 		update(width, height);
 	}
 	
+	/**
+	 * Class member method to add all images to prey list
+	 */
 	public static void addPrey()
 	{
 		prey = new ArrayList<String>();
@@ -32,6 +45,11 @@ public class Prey extends GameObject{
 		prey.add("zebra.png");
 	}
 	
+	/**
+	 * Class member method to remove given value from
+	 * prey list by given index
+	 * @param index - index of object to remove
+	 */
 	public static void removePrey(int index)
 	{
 		prey.remove(index);

@@ -34,6 +34,7 @@ public class GameObject {
 	 */
 	public void update(double dx, double dy)
 	{
+		// If image is set then draw it on canvas
 		if (img != null)
 		{
 			gc.drawImage(img, x, y, dx, dy);

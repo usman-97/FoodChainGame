@@ -27,4 +27,18 @@ public class FoodChainModel {
 		if (memberType.equalsIgnoreCase("predator"))
 			predator.put(selectBtn, member);
 	}
+	
+	public boolean checkPanels(GameObject member, HashMap <Button, GameObject> chain)
+	{
+		boolean found = false;
+		for (GameObject chainMember : chain.values())
+		{
+			if (member == chainMember)
+			{
+				found = true;
+				break;
+			}
+		}
+		return found;
+	}
 }
