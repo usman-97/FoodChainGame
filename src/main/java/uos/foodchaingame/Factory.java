@@ -22,8 +22,10 @@ public class Factory implements FactoryIF{
 	 * @param y
 	 */
 	public GameObject create(String discrim, double x, double y, double width, double height, String imgPath) {
+		
+		// Create an object according to given discrim
 		if (discrim.equalsIgnoreCase("producer"))
-			return new Producer(x, y, gc, width, height, imgPath);
+			return new Producer(x, y, gc, width, height, imgPath); // instantiate Producer
 		else if (discrim.equalsIgnoreCase("prey"))
 			return new Prey(x, y, gc, width, height, imgPath); // instantiate Prey
 		else if (discrim.equalsIgnoreCase("predator"))

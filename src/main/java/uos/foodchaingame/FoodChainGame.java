@@ -49,8 +49,8 @@ public class FoodChainGame extends Application{
 	FoodChainView view;
 	FoodChainController controller;
 	
-	Label resultText;
-	ImageView helpImg;
+	Label resultText; // game result
+	ImageView helpImg; // Guidance for player
 
 	/**
 	 * @param args
@@ -83,6 +83,7 @@ public class FoodChainGame extends Application{
 //		startView.setStage(primaryStage);
 //		startView.setScene(gameScene);
 		
+		// Canvas for Home screen
 		homeScreen = new Canvas(1000, 800);
 		gc = homeScreen.getGraphicsContext2D();
 		gc.setFill(Color.GREENYELLOW);
@@ -91,6 +92,7 @@ public class FoodChainGame extends Application{
 		// Start application with start screen
 		primaryStage.setScene(start);
 		
+		// Title of the game
 		gameTitle = new Label("FOOD CHAIN");
 		gameTitle.setLayoutX(250);
 		gameTitle.setLayoutY(50);
@@ -103,13 +105,16 @@ public class FoodChainGame extends Application{
 		play.setPrefHeight(200);
 		setBackgroundImage("playbtn.png", play);
 		
+		// Help button to navigate to help screen
 		help = new Button();
 		help.setPrefWidth(200);
 		help.setPrefHeight(200);
 		setBackgroundImage("helpbtn.png", help);
 		
+		// Navigate player to help screen when help button is clicked
 		help.setOnAction(event -> primaryStage.setScene(helpScreen));
 		
+		// Home screen buttons container
 		HBox homeButtons = new HBox(10, play, help);
 		homeButtons.setLayoutX(250);
 		homeButtons.setLayoutY(180);
@@ -129,17 +134,21 @@ public class FoodChainGame extends Application{
 
 			@Override
 			public void handle(ActionEvent event) {
+				// resetGame method call
+				// Starts new game for player
 				resetGame(model, view, controller, primaryStage, gameRoot, result);
 				primaryStage.setScene(gameScene); // Change screen to game screen
 				
 			}};
-		play.setOnAction(startGame);
+		play.setOnAction(startGame); // startGame event is triggered when play button is clicked 
 		
+		// Help screen Canvas
 		helpCanvas = new Canvas(1000, 800);
 		gcHelp = helpCanvas.getGraphicsContext2D();
 		gcHelp.setFill(Color.GREENYELLOW);
 		gcHelp.fillRect(0, 0, helpCanvas.getWidth(), helpCanvas.getHeight());
 		
+		// Back button to navigate player back to home screen
 		back = new Button();
 		back.setLayoutX(20);
 		back.setLayoutY(20);
@@ -147,8 +156,10 @@ public class FoodChainGame extends Application{
 		back.setPrefHeight(65);
 		setBackgroundImage("backbtn.png", back);
 		
+		// When back button is clicked then it navigates player back to home screen
 		back.setOnAction(event -> primaryStage.setScene(start));
 		
+		// Player guidance for the game
 		helpImg = new ImageView();
 		helpImg.setLayoutX(100);
 		helpImg.setLayoutY(100);
@@ -158,50 +169,55 @@ public class FoodChainGame extends Application{
 		
 		helpPane.getChildren().addAll(helpCanvas, back, helpImg);
 		
-		
+		// Result screen canvas
 		resultCanvas = new Canvas(1000, 800);
 		gc1 = resultCanvas.getGraphicsContext2D();
 		gc1.setFill(Color.GREENYELLOW);
 		gc1.fillRect(0, 0, resultCanvas.getWidth(), resultCanvas.getHeight());
 		resultRoot.getChildren().add(resultCanvas);
 		
+		// Result text
 		resultText = new Label();
 		resultText.setLayoutX(280);
 		resultText.setLayoutY(150);
 		resultText.setStyle("-fx-padding: 10px; -fx-background-color: #000000; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-weight: bold;");
 		resultRoot.getChildren().add(resultText);
 		
+		// Home button to navigate to home screen
 		home = new Button();
 		home.setPrefWidth(250);
 		home.setPrefHeight(250);
 		setBackgroundImage("homebtn.png", home);
 		
+		// Replay button to replay the game straightway 
 		replay = new Button();
 		replay.setPrefWidth(250);
 		replay.setPrefHeight(250);
 		setBackgroundImage("replaybtn.png", replay);
 		
+		// Result screen buttons container
 		HBox buttonContainer = new HBox(10, home, replay);
 		buttonContainer.setLayoutX(200);
 		buttonContainer.setLayoutY(300);
 		resultRoot.getChildren().add(buttonContainer);
 		
-		home.setOnAction(event -> {
-
-			// resetGame(model, view, controller, primaryStage, gameRoot, result);
-			
-			primaryStage.setScene(start);
-		});
+		// When home button is clicked then it will trigger an event which
+		// will navigate user back to home screen
+		home.setOnAction(event ->primaryStage.setScene(start));
+		
+		// When replay button is clicked then it triggers event will start
+		// a new game for player
 		replay.setOnAction(event -> {
+			// Start new game
 			resetGame(model, view, controller, primaryStage, gameRoot, result);
-			primaryStage.setScene(gameScene);
+			primaryStage.setScene(gameScene); // Navigate to game screen
 		});
 		
 		primaryStage.show(); // Show the Window
 	}
 	
 	/**
-	 * 
+	 * Start new game for player with default settings
 	 * @param model
 	 * @param view
 	 * @param controller
@@ -211,21 +227,28 @@ public class FoodChainGame extends Application{
 	 */
 	private void resetGame(FoodChainModel model, FoodChainView view, FoodChainController controller, Stage stage, Pane root, Scene scene)
 	{
-		model = new FoodChainModel();
-		view = new FoodChainView(root, model);
-		controller = new FoodChainController(model, view);
+		// MVC Pattern
+		model = new FoodChainModel(); // New instance of FoodChainModel
+		view = new FoodChainView(root, model); // New instance of FoodChainView
+		controller = new FoodChainController(model, view); // new instance of FoodChainController
 		
-		view.setStage(stage);
-		view.setScene(scene);
-		view.setResult(resultText);
+		view.setStage(stage); // set stage to use
+		view.setScene(scene); // set scene to navigate
+		view.setResult(resultText); // set text to edit
 	}
 	
+	/**
+	 * Set background image for a button
+	 * @param imgName
+	 * @param button
+	 */
 	private void setBackgroundImage(String imgName, Button button)
 	{
+		// Background image instance
 		BackgroundImage btnImg = new BackgroundImage(new Image(getClass().getResource(imgName).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-		Background btnBackground = new Background(btnImg);
+		Background btnBackground = new Background(btnImg); // Background instance to set background image
 		
-		button.setBackground(btnBackground);
+		button.setBackground(btnBackground); // Button to set background image
 	}
 
 }

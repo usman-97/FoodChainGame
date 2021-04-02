@@ -4,7 +4,8 @@
 package uos.foodchaingame;
 
 /**
- * @author RAJA
+ * Timer Class to set the timer in minutes and seconds
+ * @author Usman Shabir Kousar
  *
  */
 public class Timer {
@@ -27,6 +28,8 @@ public class Timer {
 		return timer;
 	}
 	
+	// Clas getters and setters
+	
 	public int getSeconds() {
 		return seconds;
 	}
@@ -39,17 +42,19 @@ public class Timer {
 		return minutes;
 	}
 	
-	
-	
+	/**
+	 * Set timer by given time
+	 * @param startTime
+	 */
 	public void setTimer(int startTime)
 	{
-		// this.startTime = startTime;
-		seconds = startTime;
+		seconds = startTime; // set given time to timer seconds
 		
+		// If startTime is greater than or equal to 60
 		if (startTime >= 60)
 		{
-			minutes = seconds/60;
-			seconds -= (minutes * 60);
+			minutes = seconds/60; // calculate minutes
+			seconds -= (minutes * 60); // calculate seconds
 		}
 		else
 		{
@@ -57,17 +62,21 @@ public class Timer {
 		}
 	}
 	
+	/**
+	 * Decrement the time in timer
+	 */
 	public void decrementTimer()
 	{
+		// If seconds are greater than 0
 		if (seconds > 0)
-			seconds--;
+			seconds--; // decrement seconds
 			
 		if (seconds == 0)
 		{
 			if (minutes > 0)
 			{
-				minutes--;
-				seconds = 60;
+				minutes--; // Decrement the minute
+				seconds = 60; // set seconds to default
 			}
 		}
 	}

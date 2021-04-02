@@ -60,6 +60,7 @@ public class FoodChainView {
 	boolean selectProducer, selectPrey, selectPredator;
 	private PanelStrategyIF strategy;
 	
+	// Game end condition variables
 	private boolean isWin, isLose;
 	
 	private Label objectiveHeading, objective;
@@ -186,6 +187,7 @@ public class FoodChainView {
 		timeContainer.setStyle("-fx-padding: 10px;-fx-background-color: black; -fx-font-size: 30px;");
 		root.getChildren().add(timeContainer);
 		
+		// Objective or goal of the game
 		objectiveHeading = new Label("Objective");
 		objectiveHeading.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 30px; -fx-font-weight: bold;");
 		
@@ -198,6 +200,7 @@ public class FoodChainView {
 		gameObjective.setStyle("-fx-padding: 10px; -fx-background-color: black;");
 		root.getChildren().add(gameObjective);
 		
+		// Display chances left to finish the game
 		chancesLbl = new Label("Chances: " + chances);
 		chancesLbl.setLayoutX(200);
 		chancesLbl.setLayoutY(10);
@@ -309,7 +312,7 @@ public class FoodChainView {
 			// Create food chain member using factory object
 			GameObject member = factory.create(chainMember, x, y, width, height, foodChainMembers.get(index));
 			foodChainMembers.remove(index); // remove the image from the list once it was selected for a member
-			model.addProducer(member, chainMember); // Add member to selected member map in food chain model
+			model.addMember(member, chainMember); // Add member to selected member map in food chain model
 			
 			// Get the key value from model member map
 			Button selectBtn = selectedMembers.entrySet().stream()
@@ -331,7 +334,7 @@ public class FoodChainView {
 			};
 			selectBtn.setOnAction(selectBtnAction);
 			
-			x += distance;
+			x += distance; // increase the distance between new created members and other members
 		}
 	}
 	
@@ -406,59 +409,22 @@ public class FoodChainView {
 					timeline.stop();
 					// Set lose condition to true
 					isLose = true;
-					result.setText("Out of Time :(");
+					result.setText("Too Slow :(");
 					// System.out.println(isLose);
 				}
 				
+				// If one of the end condition is true
 				if (isLose || isWin)
 				{
-					timeline.stop();
-					stage.setScene(scene);
-//					resetView();
-//					selectedProducer.setFill(Color.SADDLEBROWN);
-//					selectedPrey.setFill(Color.SADDLEBROWN);
-//					selectedPredator.setFill(Color.SADDLEBROWN);
+					timeline.stop(); // then stop timer
+					stage.setScene(scene); // change the scene or screen
 				}
 			}});
 		timeline.getKeyFrames().add(frame);
 		timeline.playFromStart();
 	}
 	
-	/**
-	 * Resets view back to default
-	 */
-	public void resetView()
-	{
-//		// Reset the game ending conditions
-//		isWin = false;
-//		isLose = false;
-//		
-//		// Reset chances 
-//		chances = 2;
-//		chancesLbl.setText("Chances: " + chances);
-//		
-//		// Reset count down time
-//		// countDownTime.setSeconds(2);
-//		updateTimer(60);
-//		
-//		// Reset user selected members
-//		chosenProducer = null;
-//		chosenPrey = null;
-//		chosenPredator = null;
-//		
-//		// Reset images in panel
-//		selectedProducerImg = null;
-//		selectedPreyImg = null;
-//		selectedPredatorImg = null;
-//	
-//		model.producers.clear();
-//		model.prey.clear();
-//		model.predator.clear();
-//		
-//		System.out.println(model.producers);
-//		System.out.println(model.prey);
-//		System.out.println(model.predator);
-	}
+	// Getters and Setters methods for Fields or class variables 
 	
 	public boolean isWin() {
 		return isWin;
