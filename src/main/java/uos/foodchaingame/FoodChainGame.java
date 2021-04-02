@@ -13,6 +13,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -32,15 +33,13 @@ import javafx.stage.Stage;
 public class FoodChainGame extends Application{
 	
 	// Root panes for scenes
-	Pane root, gameRoot, resultRoot;
-	Scene start, gameScene, result;
-	Canvas homeScreen, resultCanvas;
-	GraphicsContext gc, gc1;
+	Pane root, gameRoot, resultRoot, helpPane;
+	Scene start, gameScene, result, helpScreen;
+	Canvas homeScreen, resultCanvas, helpCanvas;
+	GraphicsContext gc, gc1, gcHelp;
 	
 	Label gameTitle;
-	
-	// Scenes for different screens
-	Button play, help, home, replay;
+	Button play, help, home, replay, back;
 	
 	StartView startView;
 	StartController startController;
@@ -49,6 +48,9 @@ public class FoodChainGame extends Application{
 	FoodChainModel model;
 	FoodChainView view;
 	FoodChainController controller;
+	
+	Label resultText;
+	ImageView helpImg;
 
 	/**
 	 * @param args
@@ -68,10 +70,12 @@ public class FoodChainGame extends Application{
 		root = new Pane(); // Root pane for start screen
 		gameRoot = new Pane(); // Root pane for actual game
 		resultRoot = new Pane(); // Root pane for final result
+		helpPane = new Pane();
 		
 		start = new Scene(root, 1000, 800); // Start screen
 		gameScene = new Scene(gameRoot, 1000, 800); // Game screen
 		result = new Scene(resultRoot, 1000, 800); // Result screen
+		helpScreen = new Scene(helpPane, 1000, 800);
 		
 //		startView = new StartView(root);
 //		startController = new StartController(startView);
@@ -92,45 +96,80 @@ public class FoodChainGame extends Application{
 		gameTitle.setLayoutY(50);
 		gameTitle.setStyle("-fx-font-size: 80px; -fx-text-fill: #035719; -fx-font-weight: bold;");
 		
-//		BackgroundImage playBtnImg = new BackgroundImage(new Image(getClass().getResourceAsStream("playbtn.png")), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-//		Background playBtnBackground = new Background(playBtnImg);
 		
 		// Play button to start the game
 		play = new Button();
-		play.setLayoutX(250);
-		play.setLayoutY(180);
 		play.setPrefWidth(200);
 		play.setPrefHeight(200);
 		setBackgroundImage("playbtn.png", play);
-		// play.setStyle("-fx-background-image: url('lion.jpg')");
-		// play.setStyle("-fx-font-size: 30px; -fx-background-color: #035719; -fx-text-fill: #FFFFFF");
-		// play.setBackground(playBtnBackground);
 		
-		root.getChildren().addAll(homeScreen, gameTitle, play);
+		help = new Button();
+		help.setPrefWidth(200);
+		help.setPrefHeight(200);
+		setBackgroundImage("helpbtn.png", help);
+		
+		help.setOnAction(event -> primaryStage.setScene(helpScreen));
+		
+		HBox homeButtons = new HBox(10, play, help);
+		homeButtons.setLayoutX(250);
+		homeButtons.setLayoutY(180);
+		
+		root.getChildren().addAll(homeScreen, gameTitle, homeButtons);
 		
 		// MVC pattern implement in this class
-		model = new FoodChainModel(); // Model 
-		view = new FoodChainView(gameRoot, model); // View for visual presentation
-		controller = new FoodChainController(model, view); // Controller to control the logic
-		
-		view.setStage(primaryStage);
-		view.setScene(result);
+//		model = new FoodChainModel(); // Model 
+//		view = new FoodChainView(gameRoot, model); // View for visual presentation
+//		controller = new FoodChainController(model, view); // Controller to control the logic
+//		
+//		view.setStage(primaryStage);
+//		view.setScene(result);
 		
 		// Event handler to start the game when play button is clicked
 		EventHandler<ActionEvent> startGame = new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
+				resetGame(model, view, controller, primaryStage, gameRoot, result);
 				primaryStage.setScene(gameScene); // Change screen to game screen
 				
 			}};
 		play.setOnAction(startGame);
+		
+		helpCanvas = new Canvas(1000, 800);
+		gcHelp = helpCanvas.getGraphicsContext2D();
+		gcHelp.setFill(Color.GREENYELLOW);
+		gcHelp.fillRect(0, 0, helpCanvas.getWidth(), helpCanvas.getHeight());
+		
+		back = new Button();
+		back.setLayoutX(20);
+		back.setLayoutY(20);
+		back.setPrefWidth(65);
+		back.setPrefHeight(65);
+		setBackgroundImage("backbtn.png", back);
+		
+		back.setOnAction(event -> primaryStage.setScene(start));
+		
+		helpImg = new ImageView();
+		helpImg.setLayoutX(100);
+		helpImg.setLayoutY(100);
+		helpImg.setFitWidth(700);
+		helpImg.setFitHeight(600);
+		helpImg.setImage(new Image(getClass().getResource("help.jpg").toExternalForm()));
+		
+		helpPane.getChildren().addAll(helpCanvas, back, helpImg);
+		
 		
 		resultCanvas = new Canvas(1000, 800);
 		gc1 = resultCanvas.getGraphicsContext2D();
 		gc1.setFill(Color.GREENYELLOW);
 		gc1.fillRect(0, 0, resultCanvas.getWidth(), resultCanvas.getHeight());
 		resultRoot.getChildren().add(resultCanvas);
+		
+		resultText = new Label();
+		resultText.setLayoutX(280);
+		resultText.setLayoutY(150);
+		resultText.setStyle("-fx-padding: 10px; -fx-background-color: #000000; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-weight: bold;");
+		resultRoot.getChildren().add(resultText);
 		
 		home = new Button();
 		home.setPrefWidth(250);
@@ -149,7 +188,7 @@ public class FoodChainGame extends Application{
 		
 		home.setOnAction(event -> {
 
-			resetGame(model, view, controller, primaryStage, gameRoot, result);
+			// resetGame(model, view, controller, primaryStage, gameRoot, result);
 			
 			primaryStage.setScene(start);
 		});
@@ -178,6 +217,7 @@ public class FoodChainGame extends Application{
 		
 		view.setStage(stage);
 		view.setScene(scene);
+		view.setResult(resultText);
 	}
 	
 	private void setBackgroundImage(String imgName, Button button)

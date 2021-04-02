@@ -122,12 +122,14 @@ public class FoodChainController implements EventHandler{
 			if (checkProducer && checkPrey && checkPredator)
 			{
 				view.setWin(true);
+				view.getResult().setText("Success :)");
 			}
 			else
 			{
 				if (view.getChances() < 1)
 				{
 					view.setLose(true);
+					view.getResult().setText(" :(");
 					view.getStage().setScene(view.getScene());
 					// resetView();
 				}

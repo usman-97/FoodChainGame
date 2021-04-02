@@ -66,6 +66,8 @@ public class FoodChainView {
 	
 	private int chances;
 	protected Label chancesLbl;
+	
+	private Label result;
 
 	/**
 	 * Constructor of Food Chain View
@@ -404,6 +406,7 @@ public class FoodChainView {
 					timeline.stop();
 					// Set lose condition to true
 					isLose = true;
+					result.setText("Out of Time :(");
 					// System.out.println(isLose);
 				}
 				
@@ -496,4 +499,14 @@ public class FoodChainView {
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
+
+	public Label getResult() {
+		return result;
+	}
+
+	public void setResult(Label result) {
+		this.result = result;
+	}
+	
+	
 }
