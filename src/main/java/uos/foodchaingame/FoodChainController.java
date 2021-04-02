@@ -19,8 +19,8 @@ import javafx.scene.shape.Circle;
  */
 public class FoodChainController implements EventHandler{
 
-	protected FoodChainModel model; // food chain model
-	protected FoodChainView view; // food chain view
+	private FoodChainModel model; // food chain model
+	private FoodChainView view; // food chain view
 	
 	// Strategies for panels in view
 	protected DefaultPanelStrategy defaultStrategy;

@@ -41,12 +41,12 @@ public class FoodChainView {
 	// Two Canvas
 	private Canvas jungle, selection;
 	// Panels
-	Circle selectedProducer, selectedPrey, selectedPredator;
+	protected Circle selectedProducer, selectedPrey, selectedPredator;
 	// Images of selected object on panels
-	ImageView selectedProducerImg, selectedPreyImg, selectedPredatorImg;
+	private ImageView selectedProducerImg, selectedPreyImg, selectedPredatorImg;
 	
 	// Button to select panels
-	Button chooseProducer, choosePrey, choosePredator, check;
+	protected Button chooseProducer, choosePrey, choosePredator, check;
 	// Panel headings
 	private Label producerLbl, preyLbl, predatorLbl;
 	

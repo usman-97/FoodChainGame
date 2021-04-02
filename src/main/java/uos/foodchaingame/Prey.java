@@ -14,7 +14,7 @@ import javafx.scene.image.Image;
  */
 public class Prey extends GameObject{
 
-	public static ArrayList<String> prey; // Stores images for prey objects
+	protected static ArrayList<String> prey; // Stores images for prey objects
 	
 	/**
 	 * Constructor of Prey class model which sets the Prey objects position, height

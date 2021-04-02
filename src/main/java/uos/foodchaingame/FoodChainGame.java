@@ -33,24 +33,24 @@ import javafx.stage.Stage;
 public class FoodChainGame extends Application{
 	
 	// Root panes for scenes
-	Pane root, gameRoot, resultRoot, helpPane;
-	Scene start, gameScene, result, helpScreen;
-	Canvas homeScreen, resultCanvas, helpCanvas;
-	GraphicsContext gc, gc1, gcHelp;
+	private Pane root, gameRoot, resultRoot, helpPane;
+	private Scene start, gameScene, result, helpScreen;
+	private Canvas homeScreen, resultCanvas, helpCanvas;
+	private GraphicsContext gc, gc1, gcHelp;
 	
-	Label gameTitle;
-	Button play, help, home, replay, back;
+	private Label gameTitle;
+	private Button play, help, home, replay, back;
 	
-	StartView startView;
-	StartController startController;
+//	private StartView startView;
+//	private StartController startController;
 	
 	// MVC pattern
-	FoodChainModel model;
-	FoodChainView view;
-	FoodChainController controller;
+	private FoodChainModel model;
+	private FoodChainView view;
+	private FoodChainController controller;
 	
-	Label resultText; // game result
-	ImageView helpImg; // Guidance for player
+	private Label resultText; // game result
+	private ImageView helpImg; // Guidance for player
 
 	/**
 	 * @param args
@@ -136,7 +136,7 @@ public class FoodChainGame extends Application{
 			public void handle(ActionEvent event) {
 				// resetGame method call
 				// Starts new game for player
-				resetGame(model, view, controller, primaryStage, gameRoot, result);
+				startNewGame(model, view, controller, primaryStage, gameRoot, result);
 				primaryStage.setScene(gameScene); // Change screen to game screen
 				
 			}};
@@ -209,7 +209,7 @@ public class FoodChainGame extends Application{
 		// a new game for player
 		replay.setOnAction(event -> {
 			// Start new game
-			resetGame(model, view, controller, primaryStage, gameRoot, result);
+			startNewGame(model, view, controller, primaryStage, gameRoot, result);
 			primaryStage.setScene(gameScene); // Navigate to game screen
 		});
 		
@@ -225,7 +225,7 @@ public class FoodChainGame extends Application{
 	 * @param root
 	 * @param scene
 	 */
-	private void resetGame(FoodChainModel model, FoodChainView view, FoodChainController controller, Stage stage, Pane root, Scene scene)
+	private void startNewGame(FoodChainModel model, FoodChainView view, FoodChainController controller, Stage stage, Pane root, Scene scene)
 	{
 		// MVC Pattern
 		model = new FoodChainModel(); // New instance of FoodChainModel

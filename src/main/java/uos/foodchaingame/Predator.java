@@ -14,7 +14,7 @@ import javafx.scene.image.Image;
  */
 public class Predator extends GameObject{
 	
-	static ArrayList<String> predators; // Stores images for predator objects
+	protected static ArrayList<String> predators; // Stores images for predator objects
 	
 	/**
 	 * Constructor of Predator class model which sets the Prey objects position, height

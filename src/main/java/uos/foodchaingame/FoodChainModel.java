@@ -17,9 +17,9 @@ public class FoodChainModel {
 
 	// Map for each type of member
 	// Map store all given to choose in the game
-	HashMap<Button, GameObject> producers = new HashMap<Button, GameObject>();
-	HashMap<Button, GameObject> prey = new HashMap<Button, GameObject>();
-	HashMap<Button, GameObject> predator = new HashMap<Button, GameObject>();
+	protected HashMap<Button, GameObject> producers = new HashMap<Button, GameObject>();
+	protected HashMap<Button, GameObject> prey = new HashMap<Button, GameObject>();
+	protected HashMap<Button, GameObject> predator = new HashMap<Button, GameObject>();
 	
 	/**
 	 * Add members to their map 

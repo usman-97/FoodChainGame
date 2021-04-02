@@ -17,7 +17,7 @@ import javafx.scene.image.Image;
  */
 public class Producer extends GameObject{
 
-	public static ArrayList<String> producers; // Stores images for producers objects
+	protected static ArrayList<String> producers; // Stores images for producers objects
 	
 	/**
 	 * Constructor of Producer class model which sets the Producer objects position, height
