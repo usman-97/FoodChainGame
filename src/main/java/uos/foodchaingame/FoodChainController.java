@@ -3,11 +3,8 @@
  */
 package uos.foodchaingame;
 
-import java.util.HashMap;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 

@@ -4,6 +4,7 @@
 package uos.foodchaingame;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javafx.scene.control.Button;
 
@@ -17,9 +18,9 @@ public class FoodChainModel {
 
 	// Map for each type of member
 	// Map store all given to choose in the game
-	protected HashMap<Button, GameObject> producers = new HashMap<Button, GameObject>();
-	protected HashMap<Button, GameObject> prey = new HashMap<Button, GameObject>();
-	protected HashMap<Button, GameObject> predator = new HashMap<Button, GameObject>();
+	protected Map<Button, GameObject> producers = new HashMap<Button, GameObject>();
+	protected Map<Button, GameObject> prey = new HashMap<Button, GameObject>();
+	protected Map<Button, GameObject> predator = new HashMap<Button, GameObject>();
 	
 	/**
 	 * Add members to their map 
@@ -45,7 +46,7 @@ public class FoodChainModel {
 	 * @param chain
 	 * @return
 	 */
-	public boolean checkPanels(GameObject member, HashMap <Button, GameObject> chain)
+	public boolean checkPanels(GameObject member, Map <Button, GameObject> chain)
 	{
 		boolean found = false;
 		

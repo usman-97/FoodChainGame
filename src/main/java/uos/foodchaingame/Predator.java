@@ -42,6 +42,7 @@ public class Predator extends GameObject{
 		predators.add("lion.jpg");
 		predators.add("fox.png");
 		predators.add("wolf.png");
+		predators.add("leopard.png");
 	}
 	
 	/**

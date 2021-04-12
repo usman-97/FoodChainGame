@@ -276,7 +276,7 @@ public class FoodChainView {
 		Factory factory = new Factory(gc); // Factory object to create food chain members
 		int range = 0; // numbers of members to add 
 		ArrayList<String> foodChainMembers = new ArrayList<String>(); // temporary list to store member type images
-		HashMap<Button, GameObject> selectedMembers = new HashMap<Button, GameObject>(); // temporary map to store members
+		Map<Button, GameObject> selectedMembers = new HashMap<Button, GameObject>(); // temporary map to store members
 		
 		// Give values to variables by given member type
 		if (chainMember.equalsIgnoreCase("producer"))

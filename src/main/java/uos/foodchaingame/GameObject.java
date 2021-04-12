@@ -13,8 +13,8 @@ import javafx.scene.image.Image;
 public class GameObject {
 
 	protected Image img; // Image of the object
-	protected double x; // Coordinates for object
-	double y;
+	protected double x, y; // Coordinates for object
+	// double y;
 	protected GraphicsContext gc; // graphics context to draw the object
 	
 	/**

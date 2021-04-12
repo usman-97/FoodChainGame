@@ -121,14 +121,6 @@ public class FoodChainGame extends Application{
 		
 		root.getChildren().addAll(homeScreen, gameTitle, homeButtons);
 		
-		// MVC pattern implement in this class
-//		model = new FoodChainModel(); // Model 
-//		view = new FoodChainView(gameRoot, model); // View for visual presentation
-//		controller = new FoodChainController(model, view); // Controller to control the logic
-//		
-//		view.setStage(primaryStage);
-//		view.setScene(result);
-		
 		// Event handler to start the game when play button is clicked
 		EventHandler<ActionEvent> startGame = new EventHandler<ActionEvent>() {
 
@@ -165,7 +157,7 @@ public class FoodChainGame extends Application{
 		helpImg.setLayoutY(100);
 		helpImg.setFitWidth(700);
 		helpImg.setFitHeight(600);
-		helpImg.setImage(new Image(getClass().getResource("help.jpg").toExternalForm()));
+		helpImg.setImage(new Image(getClass().getResourceAsStream("help.jpg")));
 		
 		helpPane.getChildren().addAll(helpCanvas, back, helpImg);
 		
