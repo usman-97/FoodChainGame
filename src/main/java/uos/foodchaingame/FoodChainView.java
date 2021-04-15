@@ -43,7 +43,7 @@ public class FoodChainView {
 	// Panels
 	protected Circle selectedProducer, selectedPrey, selectedPredator;
 	// Images of selected object on panels
-	private ImageView selectedProducerImg, selectedPreyImg, selectedPredatorImg;
+	protected ImageView selectedProducerImg, selectedPreyImg, selectedPredatorImg;
 	
 	// Button to select panels
 	protected Button chooseProducer, choosePrey, choosePredator, check;
@@ -65,9 +65,10 @@ public class FoodChainView {
 	
 	private Label objectiveHeading, objective;
 	
-	private int chances;
-	protected Label chancesLbl;
+	private int score;
+	protected Label scoreLbl;
 	
+	protected Label errorLbl;
 	private Label result;
 
 	/**
@@ -80,9 +81,7 @@ public class FoodChainView {
 		this.root = root;
 		this.model = model;
 		countDownTime = Timer.getInstance(); // Singleton and the only instance of Timer class
-		isWin = false;
-		isLose = false;
-		chances = 2;
+		score = 0;
 		
 		// Canvas to display all food chain members
 		jungle = new Canvas(1000, 600);
@@ -169,9 +168,15 @@ public class FoodChainView {
 		// Check if use has selected right members on right panels
 		check = new Button("Check");
 		check.setLayoutX(900);
-		check.setLayoutY(700);
+		check.setLayoutY(650);
 		check.setStyle("-fx-background-color: #ffb940; -fx-font-size: 20px; -fx-border-color: black; -fx-font-weight: bold; -fx-border-width: 3px;");
 		root.getChildren().add(check);
+		
+		errorLbl = new Label();
+		errorLbl.setLayoutX(670);
+		errorLbl.setLayoutY(750);
+		errorLbl.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+		root.getChildren().add(errorLbl);
 		
 		// Display timer seconds
 		seconds = new Label();
@@ -191,21 +196,21 @@ public class FoodChainView {
 		objectiveHeading = new Label("Objective");
 		objectiveHeading.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 30px; -fx-font-weight: bold;");
 		
-		objective = new Label("* Create a FOOD CHAIN.");
+		objective = new Label("* Create as many Food Chain as \npossible in given time.");
 		objective.setStyle("-fx-text-fill: #FFFFFF;-fx-font-size: 20px;");
 		
 		VBox gameObjective = new VBox(5, objectiveHeading, objective);
-		gameObjective.setLayoutX(750);
+		gameObjective.setLayoutX(650);
 		gameObjective.setLayoutY(10);
 		gameObjective.setStyle("-fx-padding: 10px; -fx-background-color: black;");
 		root.getChildren().add(gameObjective);
 		
-		// Display chances left to finish the game
-		chancesLbl = new Label("Chances: " + chances);
-		chancesLbl.setLayoutX(200);
-		chancesLbl.setLayoutY(10);
-		chancesLbl.setStyle("-fx-padding: 10px; -fx-background-color: black; -fx-text-fill: white; -fx-font-size: 20px");
-		root.getChildren().add(chancesLbl);
+		// Display player score
+		scoreLbl = new Label("Score: " + score);
+		scoreLbl.setLayoutX(200);
+		scoreLbl.setLayoutY(10);
+		scoreLbl.setStyle("-fx-padding: 10px; -fx-background-color: black; -fx-text-fill: white; -fx-font-size: 20px");
+		root.getChildren().add(scoreLbl);
 	}
 	
 	/**
@@ -403,25 +408,52 @@ public class FoodChainView {
 				setMinutes(); // Display updated minutes
 				setSeconds(); // Display updated seconds
 				
-				// If count down time is over then stop the timer
-				if (countDownTime.getMinutes() == 0 & countDownTime.getSeconds() == 0)
+				// If count down time is over then stop the timer or if 
+				// player have guessed all possible food chains
+				if ((countDownTime.getMinutes() == 0 && countDownTime.getSeconds() == 0) || model.totalFoodChains() == model.foodChains.size())
 				{
-					timeline.stop();
-					// Set lose condition to true
-					isLose = true;
-					result.setText("Too Slow :(");
-					// System.out.println(isLose);
-				}
-				
-				// If one of the end condition is true
-				if (isLose || isWin)
-				{
-					timeline.stop(); // then stop timer
-					stage.setScene(scene); // change the scene or screen
+					timeline.stop(); // stop the timer
+					setResultText(); // Calculate the final percentage
+					stage.setScene(scene); // change the scene to result screen
 				}
 			}});
 		timeline.getKeyFrames().add(frame);
 		timeline.playFromStart();
+	}
+	
+	/**
+	 * Caculate the final percentage of the player
+	 */
+	private void setResultText()
+	{
+		int score = model.calculateTotalScore(this.score); // Player final score percentage
+		result.setText(score + "% ");
+		
+		// Set the final percentage on result screen with a message
+		// according to player's achieved percentage
+		if (score < 40)
+		{
+			result.setStyle("-fx-padding: 10px; -fx-background-color: red; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-weight: bold;");
+			result.setText(result.getText() + ":( LOSER");
+		}
+		
+		if (score >= 40 && score < 65)
+		{
+			result.setStyle("-fx-padding: 10px; -fx-background-color: orange; -fx-font-size: 60px; -fx-font-weight: bold;");
+			result.setText(result.getText() + " bit faster next time");
+		}
+		
+		if (score >= 65 && score < 90)
+		{
+			result.setStyle("-fx-padding: 10px; -fx-background-color: #87ff69; -fx-font-size: 80px; -fx-font-weight: bold;");
+			result.setText(result.getText() + " Well Done");
+		}
+		
+		if (score >= 90)
+		{
+			result.setStyle("-fx-padding: 10px; -fx-background-color: green; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-weight: bold;");
+			result.setText(result.getText() + ":) LEGEND");
+		}
 	}
 	
 	// Getters and Setters methods for Fields or class variables 
@@ -442,12 +474,12 @@ public class FoodChainView {
 		this.isLose = isLoser;
 	}
 	
-	public int getChances() {
-		return chances;
+	public int getScore() {
+		return score;
 	}
 
-	public void setChances(int chances) {
-		this.chances = chances;
+	public void setScore(int chances) {
+		this.score = chances;
 	}
 
 	public Stage getStage() {

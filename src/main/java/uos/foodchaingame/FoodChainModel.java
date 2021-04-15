@@ -3,6 +3,7 @@
  */
 package uos.foodchaingame;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,8 @@ public class FoodChainModel {
 	protected Map<Button, GameObject> prey = new HashMap<Button, GameObject>();
 	protected Map<Button, GameObject> predator = new HashMap<Button, GameObject>();
 	
+	// Stores the player's created food chains
+	protected ArrayList<ArrayList<GameObject>> foodChains = new ArrayList<ArrayList<GameObject>>();
 	/**
 	 * Add members to their map 
 	 * @param member
@@ -60,5 +63,55 @@ public class FoodChainModel {
 			}
 		}
 		return found;
+	}
+	
+	/**
+	 * Adds player successfully created food chain to FoodChain list
+	 * @param foodChain
+	 */
+	public void addFoodChain(ArrayList<GameObject> foodChain)
+	{
+		foodChains.add(foodChain);
+	}
+	
+	/**
+	 * Check if given food chain doesn't already exist in food chain list
+	 * @param chain
+	 * @return
+	 */
+	public boolean checkFoodChain(ArrayList<GameObject> chain)
+	{
+		boolean found = false;
+		for (ArrayList<GameObject> foodChain : foodChains)
+		{
+			if (chain.equals(foodChain))
+			{
+				found = true;
+				break;
+			}
+		}
+		
+		return found;
+	}
+	
+	/**
+	 * Total number of possible food chains
+	 * @return
+	 */
+	public int totalFoodChains()
+	{
+		return producers.size() * prey.size() * predator.size();
+	}
+	
+	/**
+	 * Calculate total player score
+	 * @param score
+	 * @return
+	 */
+	public int calculateTotalScore(int score)
+	{
+		double totalScore = totalFoodChains() * 10;
+		double finalScore =  score / totalScore;
+		return (int)(finalScore * 100);
 	}
 }

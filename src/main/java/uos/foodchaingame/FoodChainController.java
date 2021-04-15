@@ -3,6 +3,8 @@
  */
 package uos.foodchaingame;
 
+import java.util.ArrayList;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
@@ -111,58 +113,74 @@ public class FoodChainController implements EventHandler{
 			boolean checkPrey = model.checkPanels(view.chosenPrey, model.prey);
 			boolean checkPredator = model.checkPanels(view.chosenPredator, model.predator);
 			
-//			System.out.println(checkProducer + " " + view.chosenProducer);
-//			System.out.println(checkPrey + " " + view.chosenPrey);
-//			System.out.println(checkPredator + " " + view.choosePredator);
+			ArrayList<GameObject> foodChain = new ArrayList<GameObject>();
+			foodChain.add(view.chosenProducer);
+			foodChain.add(view.chosenPrey);
+			foodChain.add(view.chosenPredator);
 			
 			// If player selected food chain member is correct
 			// Then use correct member strategy
 			// if not then use wrong member strategy
-			if (checkProducer)
-				view.setPanelStrategy(correctMemberStrategy);
-			else
-				view.setPanelStrategy(wrongMemberStrategy);
-			view.executePanelStrategy(view.selectedProducer);
-			
-			if (checkPrey)
-				view.setPanelStrategy(correctMemberStrategy);
-			else
-				view.setPanelStrategy(wrongMemberStrategy);
-			view.executePanelStrategy(view.selectedPrey);
-			
-			if (checkPredator)
-				view.setPanelStrategy(correctMemberStrategy);
-			else
-				view.setPanelStrategy(wrongMemberStrategy);
-			view.executePanelStrategy(view.selectedPredator);
-			
-			// If player created food chain is correct then
-			if (checkProducer && checkPrey && checkPredator)
+			// Check if player created Food Chain doesn't exist yet
+			if (!model.checkFoodChain(foodChain))
 			{
-				// Set Condition to win
-				view.setWin(true);
-				// Set result text on result screen 
-				view.getResult().setText("Success :)");
-			}
-			else
-			{
-				// If player created food chain is not correct
-				// If chances are less than 1
-				if (view.getChances() < 1)
+				if (checkProducer)
+					view.setPanelStrategy(correctMemberStrategy);
+				else
+					view.setPanelStrategy(wrongMemberStrategy);
+				view.executePanelStrategy(view.selectedProducer);
+
+				if (checkPrey)
+					view.setPanelStrategy(correctMemberStrategy);
+				else
+					view.setPanelStrategy(wrongMemberStrategy);
+				view.executePanelStrategy(view.selectedPrey);
+
+				if (checkPredator)
+					view.setPanelStrategy(correctMemberStrategy);
+				else
+					view.setPanelStrategy(wrongMemberStrategy);
+				view.executePanelStrategy(view.selectedPredator);
+				
+				if (checkProducer && checkPrey && checkPredator)
 				{
-					// Set condition of lose
-					view.setLose(true);
-					view.getResult().setText("Game Over :(");
-					view.getStage().setScene(view.getScene());
+					model.addFoodChain(foodChain);
+					view.setScore(view.getScore() + 10);
+					
+					// Clear all panels
+					view.chosenProducer = null;
+					view.selectedProducerImg.setImage(null);
+					
+					view.chosenPrey = null;
+					view.selectedPreyImg.setImage(null);
+					
+					view.chosenPredator = null;
+					view.selectedPredatorImg.setImage(null);
 				}
 				else
 				{
-					// Otherwise decrease player chance
-					view.setChances(view.getChances() - 1);
-					// Update chances on screen
-					view.chancesLbl.setText("Chances: " + view.getChances());
+					// If player's created food chain is not valid then
+					// decrement the player score
+					if (view.getScore() >= 5)
+					{
+						view.setScore(view.getScore() - 5);
+					}
 				}
 			}
+			else
+			{
+				view.setPanelStrategy(wrongMemberStrategy);
+				view.executePanelStrategy(view.selectedProducer);
+				view.executePanelStrategy(view.selectedPrey);
+				view.executePanelStrategy(view.selectedPredator);
+				
+				if (view.getScore() >= 5)
+				{
+					view.setScore(view.getScore() - 5);
+				}
+				view.errorLbl.setText("You have already created this FOOD CHAIN");
+			}
+			view.scoreLbl.setText("Score: " + view.getScore());
 		}
 	}
 	

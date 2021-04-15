@@ -170,9 +170,9 @@ public class FoodChainGame extends Application{
 		
 		// Result text
 		resultText = new Label();
-		resultText.setLayoutX(280);
+		resultText.setLayoutX(240);
 		resultText.setLayoutY(150);
-		resultText.setStyle("-fx-padding: 10px; -fx-background-color: #000000; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-weight: bold;");
+		// resultText.setStyle("-fx-padding: 10px; -fx-font-size: 80px; -fx-font-weight: bold;");
 		resultRoot.getChildren().add(resultText);
 		
 		// Home button to navigate to home screen
