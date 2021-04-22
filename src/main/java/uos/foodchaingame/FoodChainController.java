@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+//import javafx.scene.media.Media;
+//import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -58,9 +60,13 @@ public class FoodChainController implements EventHandler{
 	 */
 	@Override
 	public void handle(Event event) {
+		// MediaPlayer mediaPlayer = null; // Media player to play sound
+
 		// If one of the 'choose' button on panel is clicked
 		if (event.getSource() == view.chooseProducer)
 		{
+			// buttonPlayer.play();
+			
 			view.selectProducer = true;
 			view.selectPrey = false;
 			view.selectPredator = false;
@@ -73,9 +79,13 @@ public class FoodChainController implements EventHandler{
 			view.setPanelStrategy(defaultStrategy);
 			view.executePanelStrategy(view.selectedPrey);
 			view.executePanelStrategy(view.selectedPredator);
+			
+			// mediaPlayer = view.newMediaPlayer("buttonClick1.mp3");
 		}
 		else if (event.getSource() == view.choosePrey)
 		{
+			// buttonPlayer.play();
+			
 			view.selectProducer = false;
 			view.selectPrey = true;
 			view.selectPredator = false;
@@ -86,11 +96,15 @@ public class FoodChainController implements EventHandler{
 			view.setPanelStrategy(defaultStrategy);
 			view.executePanelStrategy(view.selectedProducer);
 			view.executePanelStrategy(view.selectedPredator);
+			
+			// mediaPlayer = view.newMediaPlayer("buttonClick1.mp3");
 		}
 		else
 		{
 			if (event.getSource() == view.choosePredator)
 			{
+				// buttonPlayer.play();
+				
 				view.selectProducer = false;
 				view.selectPrey = false;
 				view.selectPredator = true;
@@ -102,8 +116,9 @@ public class FoodChainController implements EventHandler{
 				view.executePanelStrategy(view.selectedProducer);
 				view.executePanelStrategy(view.selectedPrey);
 				
+				// mediaPlayer = view.newMediaPlayer("buttonClick1.mp3");
 			}
-		}
+		}	
 		
 		// If check button is clicked
 		if (event.getSource() == view.check)
@@ -147,6 +162,8 @@ public class FoodChainController implements EventHandler{
 					model.addFoodChain(foodChain);
 					view.setScore(view.getScore() + 10);
 					
+					// mediaPlayer = view.newMediaPlayer("success.mp3");
+					
 					// Clear all panels
 					view.chosenProducer = null;
 					view.selectedProducerImg.setImage(null);
@@ -165,6 +182,8 @@ public class FoodChainController implements EventHandler{
 					{
 						view.setScore(view.getScore() - 5);
 					}
+					
+					// mediaPlayer = view.newMediaPlayer("fail1.mp3");
 				}
 			}
 			else
@@ -179,9 +198,12 @@ public class FoodChainController implements EventHandler{
 					view.setScore(view.getScore() - 5);
 				}
 				view.errorLbl.setText("You have already created this FOOD CHAIN");
+				// mediaPlayer = view.newMediaPlayer("fail1.mp3");
 			}
 			view.scoreLbl.setText("Score: " + view.getScore());
 		}
+		
+		// mediaPlayer.play();
 	}
 	
 	/**
@@ -201,6 +223,7 @@ public class FoodChainController implements EventHandler{
 	{
 		view.updateView();
 	}
+	
 }
 
 // Strategy Pattern

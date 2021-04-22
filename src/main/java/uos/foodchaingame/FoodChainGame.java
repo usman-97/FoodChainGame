@@ -4,7 +4,6 @@
 package uos.foodchaingame;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -21,6 +20,8 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+//import javafx.scene.media.Media;
+//import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -77,11 +78,10 @@ public class FoodChainGame extends Application{
 		result = new Scene(resultRoot, 1000, 800); // Result screen
 		helpScreen = new Scene(helpPane, 1000, 800);
 		
-//		startView = new StartView(root);
-//		startController = new StartController(startView);
-//		
-//		startView.setStage(primaryStage);
-//		startView.setScene(gameScene);
+		String music = FoodChainView.class.getResource("buttonClick1.mp3").toExternalForm();
+		
+		// Media sound = new Media(music);
+		// MediaPlayer mediaPlayer = new MediaPlayer(sound);
 		
 		// Canvas for Home screen
 		homeScreen = new Canvas(1000, 800);
@@ -112,7 +112,10 @@ public class FoodChainGame extends Application{
 		setBackgroundImage("helpbtn.png", help);
 		
 		// Navigate player to help screen when help button is clicked
-		help.setOnAction(event -> primaryStage.setScene(helpScreen));
+		help.setOnAction(event -> {
+			//mediaPlayer.play();
+			primaryStage.setScene(helpScreen);
+		});
 		
 		// Home screen buttons container
 		HBox homeButtons = new HBox(10, play, help);
@@ -129,6 +132,8 @@ public class FoodChainGame extends Application{
 				// resetGame method call
 				// Starts new game for player
 				startNewGame(model, view, controller, primaryStage, gameRoot, result);
+				//mediaPlayer.play();
+				
 				primaryStage.setScene(gameScene); // Change screen to game screen
 				
 			}};
@@ -149,7 +154,10 @@ public class FoodChainGame extends Application{
 		setBackgroundImage("backbtn.png", back);
 		
 		// When back button is clicked then it navigates player back to home screen
-		back.setOnAction(event -> primaryStage.setScene(start));
+		back.setOnAction(event -> {
+			//mediaPlayer.play();
+			primaryStage.setScene(start)
+			;});
 		
 		// Player guidance for the game
 		helpImg = new ImageView();
@@ -195,13 +203,17 @@ public class FoodChainGame extends Application{
 		
 		// When home button is clicked then it will trigger an event which
 		// will navigate user back to home screen
-		home.setOnAction(event ->primaryStage.setScene(start));
+		home.setOnAction(event -> {
+			//mediaPlayer.play();
+			primaryStage.setScene(start);
+		});
 		
 		// When replay button is clicked then it triggers event will start
 		// a new game for player
 		replay.setOnAction(event -> {
 			// Start new game
 			startNewGame(model, view, controller, primaryStage, gameRoot, result);
+			//mediaPlayer.play();
 			primaryStage.setScene(gameScene); // Navigate to game screen
 		});
 		

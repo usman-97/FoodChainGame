@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -23,6 +22,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -335,6 +337,8 @@ public class FoodChainView {
 				@Override
 				public void handle(ActionEvent event) {
 					selectMember(member);
+					// MediaPlayer mediaPlayer = newMediaPlayer("buttonClick1.mp3");
+					// mediaPlayer.play();
 				}
 			};
 			selectBtn.setOnAction(selectBtnAction);
@@ -385,11 +389,11 @@ public class FoodChainView {
 	
 	/**
 	 * Sets and update the count down timer
-	 * @param seconds
+	 * @param sec
 	 */
-	private void updateTimer(int seconds)
+	private void updateTimer(int sec)
 	{
-		countDownTime.setTimer(seconds); // Set the count down timer
+		countDownTime.setTimer(sec); // Set the count down timer
 		
 		Timeline timeline = new Timeline(); // Timeline instance
 		timeline.setCycleCount(Timeline.INDEFINITE); // set count to indefinite
@@ -399,7 +403,6 @@ public class FoodChainView {
 		
 		// Keyframe instance to keep the track of minutes and seconds
 		KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				// Timer class method call
@@ -408,11 +411,48 @@ public class FoodChainView {
 				setMinutes(); // Display updated minutes
 				setSeconds(); // Display updated seconds
 				
+				// New media instance to play countdown timer sound
+				// MediaPlayer mediaPlayer = newMediaPlayer("countdowntimer.mp3"); // newMedia internal method call
+				// String music = getClass().getResource("countdowntimer.mp3").toString();
+				
+				// Media sound = new Media(getClass().getResource("countdowntimer.mp3").toString());
+				// MediaPlayer mediaPlayer = new MediaPlayer(sound);
+				// AudioClip audio = new AudioClip(getClass().getResourceAsStream("countdowntimer.mp3").toString());
+				
+				if (countDownTime.getMinutes() == 0 && countDownTime.getSeconds() <= 10)
+				{
+					// mediaPlayer.play(); // play the sound when 10 seconds are left
+					// audio.play();
+					
+					// Change the countdown timer colour when 10 seconds are left
+					if (countDownTime.getSeconds() % 2 == 0)
+					{
+						minutes.setStyle("-fx-text-fill: red;");
+						seconds.setStyle("-fx-text-fill: red;");
+					}
+					else
+					{
+						minutes.setStyle("-fx-text-fill: white;");
+						seconds.setStyle("-fx-text-fill: white;");
+					}
+						
+				}
+				
 				// If count down time is over then stop the timer or if 
 				// player have guessed all possible food chains
-				if ((countDownTime.getMinutes() == 0 && countDownTime.getSeconds() == 0) || model.totalFoodChains() == model.foodChains.size())
+				if ((countDownTime.getMinutes() <= 0 && countDownTime.getSeconds() <= 0) || model.totalFoodChains() == model.foodChains.size())
 				{
 					timeline.stop(); // stop the timer
+					// mediaPlayer.pause();
+					// mediaPlayer.stop();
+					
+					// When given time ends then cause 2 seconds delay
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					setResultText(); // Calculate the final percentage
 					stage.setScene(scene); // change the scene to result screen
 				}
@@ -429,32 +469,54 @@ public class FoodChainView {
 		int score = model.calculateTotalScore(this.score); // Player final score percentage
 		result.setText(score + "% ");
 		
+		// MediaPlayer mediaPlayer = null;
+		
 		// Set the final percentage on result screen with a message
 		// according to player's achieved percentage
 		if (score < 40)
 		{
 			result.setStyle("-fx-padding: 10px; -fx-background-color: red; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-weight: bold;");
-			result.setText(result.getText() + ":( LOSER");
+			result.setText(result.getText() + ":(");
+			// mediaPlayer = newMediaPlayer("fail.mp3");
 		}
 		
 		if (score >= 40 && score < 65)
 		{
 			result.setStyle("-fx-padding: 10px; -fx-background-color: orange; -fx-font-size: 60px; -fx-font-weight: bold;");
 			result.setText(result.getText() + " bit faster next time");
+			// mediaPlayer = newMediaPlayer("success2.mp3");
 		}
 		
 		if (score >= 65 && score < 90)
 		{
 			result.setStyle("-fx-padding: 10px; -fx-background-color: #87ff69; -fx-font-size: 80px; -fx-font-weight: bold;");
 			result.setText(result.getText() + " Well Done");
+			// mediaPlayer = newMediaPlayer("success1.mp3");
 		}
 		
 		if (score >= 90)
 		{
 			result.setStyle("-fx-padding: 10px; -fx-background-color: green; -fx-text-fill: #ffffff; -fx-font-size: 80px; -fx-font-weight: bold;");
 			result.setText(result.getText() + ":) LEGEND");
+			// mediaPlayer = newMediaPlayer("success1.mp3");;
 		}
+		
+		// mediaPlayer.play();
 	}
+	
+	/**
+	 * Creates new instance of MediaPlayer
+	 * @param filename
+	 * @return MediaPlayer
+	 */
+//	public MediaPlayer newMediaPlayer(String filename)
+//	{
+//		String music = getClass().getResource(filename).toExternalForm();
+//		
+//		Media sound = new Media(music);
+//		MediaPlayer mediaPlayer = new MediaPlayer(sound);
+//		return mediaPlayer;
+//	}
 	
 	// Getters and Setters methods for Fields or class variables 
 	
